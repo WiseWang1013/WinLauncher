@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Media;
+using WinLauncher.Helpers;
 
 namespace WinLauncher.Models
 {
@@ -9,7 +10,7 @@ namespace WinLauncher.Models
         private string _name;
         public string Name { get => _name; set { _name = value; OnPropertyChanged(); } }
 
-        public string FirstLetter => string.IsNullOrEmpty(Name) ? "#" : (char.IsLetter(Name[0]) ? Name[0].ToString().ToUpper() : "#");
+        public string FirstLetter => PinyinHelper.GetFirstLetter(Name);
         public string Path { get; set; }
 
         private ImageSource _icon;
