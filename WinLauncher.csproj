@@ -64,6 +64,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -95,6 +96,7 @@
     <Compile Include="Helpers\IconHelper.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
     <Compile Include="Helpers\LnkHelper.cs" />
+    <Compile Include="Helpers\PinyinHelper.cs" />
     <Compile Include="Helpers\SystemHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -104,6 +106,7 @@
   <ItemGroup>
     <Compile Include="Models\AppItem.cs" />
     <Compile Include="Models\SettingsModel.cs" />
+    <Compile Include="Models\SkinModel.cs" />
     <Compile Include="Models\TileGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

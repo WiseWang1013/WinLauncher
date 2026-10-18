@@ -11,34 +11,21 @@
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
-        <!-- 动态主题资源初始化 -->
-        <SolidColorBrush x:Key="WindowBgBrush" Color="#1A1A1A"/>
-        <SolidColorBrush x:Key="PanelBgBrush" Color="#252525"/>
+        <SolidColorBrush x:Key="WindowBgBrush" Color="#80000000"/>
+        <SolidColorBrush x:Key="PanelBgBrush" Color="#33000000"/>
         <SolidColorBrush x:Key="TextMainBrush" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="TextMutedBrush" Color="#888888"/>
-        <SolidColorBrush x:Key="AccentBrush" Color="#0078D7"/>
+        <SolidColorBrush x:Key="TextMutedBrush" Color="#AAFFFFFF"/>
         <SolidColorBrush x:Key="MetroBgBrush" Color="#0A0A0A"/>
-
-        <!-- 搜索框专属动态颜色 -->
-        <SolidColorBrush x:Key="SearchBoxBgBrush" Color="#FFFFFF"/>
-        <SolidColorBrush x:Key="SearchBoxFgBrush" Color="#111111"/>
+        <SolidColorBrush x:Key="SearchBoxBgBrush" Color="#33FFFFFF"/>
+        <SolidColorBrush x:Key="SearchBoxFgBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="ButtonBgBrush" Color="#22FFFFFF"/>
+        <SolidColorBrush x:Key="ButtonFgBrush" Color="#FFFFFF"/>
+        <CornerRadius x:Key="TileCornerRadius">0</CornerRadius>
 
         <Style x:Key="SplitterStyle" TargetType="GridSplitter">
             <Setter Property="Width" Value="6"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Cursor" Value="SizeWE"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="GridSplitter">
-                        <Border x:Name="border" Background="{TemplateBinding Background}"/>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#444"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
         </Style>
 
         <Style x:Key="AppListItemStyle" TargetType="ListBoxItem">
@@ -52,24 +39,12 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="{DynamicResource PanelBgBrush}"/>
+                                <Setter Property="Background" Value="#33FFFFFF"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
-
-        <Style x:Key="LetterBtnStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="{DynamicResource TextMutedBrush}"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="Height" Value="18"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="{DynamicResource TextMainBrush}"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
         <Style x:Key="WindowBtnStyle" TargetType="Button">
@@ -88,6 +63,30 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#E81123"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MenuButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{DynamicResource ButtonBgBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ButtonFgBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Opacity" Value="0.8"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -96,7 +95,7 @@
         </Style>
     </Window.Resources>
 
-    <Border x:Name="MainBorder" Background="{DynamicResource WindowBgBrush}" CornerRadius="8" BorderBrush="#333" BorderThickness="1" AllowDrop="True" DragOver="Window_DragOver">
+    <Border x:Name="MainBorder" Background="{DynamicResource WindowBgBrush}" CornerRadius="8" BorderBrush="#55FFFFFF" BorderThickness="1" AllowDrop="True" DragOver="Window_DragOver">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
@@ -104,18 +103,12 @@
             </Grid.RowDefinitions>
 
             <!-- 顶部标题栏 -->
-            <Grid Grid.Row="0" Margin="10,0" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+            <Grid Grid.Row="0" Margin="10,0" Background="Transparent" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Button x:Name="btnHamburger" Content="≡" FontSize="24" Width="40" Height="40" Background="Transparent"
                             Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" Click="ToggleSettingsMenu"/>
                     <TextBlock Text="开始" Foreground="{DynamicResource TextMainBrush}" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" Margin="15,0,0,0"/>
-
-                    <!-- 修复：搜索框使用动态资源，随主题切换 -->
-                    <TextBox x:Name="txtSearch" Width="280" Height="32" Margin="30,0,0,0"
-                             Background="{DynamicResource SearchBoxBgBrush}" Foreground="{DynamicResource SearchBoxFgBrush}" 
-                             BorderThickness="0" VerticalContentAlignment="Center" Padding="10,0" TextChanged="SearchBox_TextChanged" ToolTip="搜索应用"/>
                 </StackPanel>
-
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <TextBlock x:Name="txtTime" Foreground="{DynamicResource TextMainBrush}" FontSize="14" VerticalAlignment="Center" Margin="0,0,20,0"/>
                     <Button Content="—" Style="{StaticResource WindowBtnStyle}" Click="Minimize_Click"/>
@@ -123,32 +116,63 @@
                     <Button Content="✕" Style="{StaticResource WindowBtnStyle}" Click="CloseButton_Click"/>
                 </StackPanel>
 
+                <!-- 设置菜单 -->
                 <Popup x:Name="SettingsPopup" PlacementTarget="{Binding ElementName=btnHamburger}" Placement="Bottom" StaysOpen="False">
-                    <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="6" BorderBrush="#555" BorderThickness="1" Padding="10">
+                    <Border Background="{DynamicResource PanelBgBrush}" CornerRadius="6" BorderBrush="#55FFFFFF" BorderThickness="1" Padding="10">
                         <StackPanel>
-                            <TextBlock Text="界面模式" Foreground="{DynamicResource TextMainBrush}" FontSize="12" Margin="5,0,0,5"/>
-                            <Button Content="Win10 模式" Width="160" Height="32" Margin="0,0,0,5" Background="#333" Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" Click="SwitchToWin10"/>
-                            <Button Content="Win8.1 Metro 模式" Width="160" Height="32" Background="#333" Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" Click="SwitchToWin8"/>
+                            <TextBlock Text="系统模式" Foreground="{DynamicResource TextMainBrush}" FontSize="12" Margin="5,0,0,5"/>
+                            <Button Content="Win10 动态磁贴" Width="160" Style="{StaticResource MenuButtonStyle}" Click="SwitchToWin10"/>
+                            <Button Content="Win8 Metro 全屏" Width="160" Style="{StaticResource MenuButtonStyle}" Click="SwitchToWin8"/>
+                            <Button Content="Win7 经典开始菜单" Width="160" Style="{StaticResource MenuButtonStyle}" Click="SwitchToWin7"/>
+                            <Button Content="Win11 极简单窗格" Width="160" Style="{StaticResource MenuButtonStyle}" Click="SwitchToWin11"/>
+
                             <Separator Margin="0,10"/>
-                            <TextBlock Text="主题风格" Foreground="{DynamicResource TextMainBrush}" FontSize="12" Margin="5,0,0,5"/>
+
+                            <!-- 主题风格 -->
+                            <TextBlock Text="主题风格 (仅限Win10/11)" Foreground="{DynamicResource TextMainBrush}" FontSize="12" Margin="5,0,0,5"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                <Button Content="深色" Width="75" Height="30" Margin="0,0,10,0" Background="#333" Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" Click="SetDarkTheme_Click"/>
-                                <Button Content="浅色" Width="75" Height="30" Background="#EEE" Foreground="#111" BorderThickness="0" Click="SetLightTheme_Click"/>
+                                <Button Content="深色" Width="75" Style="{StaticResource MenuButtonStyle}" Margin="0,0,10,0" Click="SetDarkTheme_Click"/>
+                                <Button Content="浅色" Width="75" Style="{StaticResource MenuButtonStyle}" Click="SetLightTheme_Click"/>
                             </StackPanel>
-                            <TextBlock Text="Metro 背景色" Foreground="{DynamicResource TextMainBrush}" FontSize="12" Margin="5,0,0,5"/>
-                            <WrapPanel Margin="5,0,0,0">
-                                <Button Width="24" Height="24" Margin="0,0,6,6" Background="#004275" BorderThickness="0" Click="MetroBg_Click" Tag="#004275"/>
-                                <Button Width="24" Height="24" Margin="0,0,6,6" Background="#3D2B56" BorderThickness="0" Click="MetroBg_Click" Tag="#3D2B56"/>
-                                <Button Width="24" Height="24" Margin="0,0,6,6" Background="#1A3A1A" BorderThickness="0" Click="MetroBg_Click" Tag="#1A3A1A"/>
-                                <Button Width="24" Height="24" Margin="0,0,6,6" Background="#5B1A1A" BorderThickness="0" Click="MetroBg_Click" Tag="#5B1A1A"/>
-                                <Button Width="24" Height="24" Margin="0,0,6,6" Background="#2C2C2C" BorderThickness="0" Click="MetroBg_Click" Tag="#2C2C2C"/>
+
+                            <!-- Win8 自定义背景色 -->
+                            <TextBlock Text="Win8 背景色" Foreground="{DynamicResource TextMainBrush}" FontSize="12" Margin="5,0,0,5"/>
+                            <WrapPanel Margin="5,0,0,10">
+                                <Button Width="24" Height="24" Margin="0,0,5,0" Background="#0A0A0A" BorderThickness="0" Click="MetroBg_Click" Tag="#0A0A0A"/>
+                                <Button Width="24" Height="24" Margin="0,0,5,0" Background="#004275" BorderThickness="0" Click="MetroBg_Click" Tag="#004275"/>
+                                <Button Width="24" Height="24" Margin="0,0,5,0" Background="#3D2B56" BorderThickness="0" Click="MetroBg_Click" Tag="#3D2B56"/>
+                                <Button Width="24" Height="24" Margin="0,0,5,0" Background="#1A3A1A" BorderThickness="0" Click="MetroBg_Click" Tag="#1A3A1A"/>
+                                <Button Width="24" Height="24" Background="#5B1A1A" BorderThickness="0" Click="MetroBg_Click" Tag="#5B1A1A"/>
                             </WrapPanel>
+
+                            <Separator Margin="0,10"/>
+                            <TextBlock Text="已导入皮肤 (右键删除)" Foreground="{DynamicResource TextMainBrush}" FontSize="12" Margin="5,0,0,5"/>
+                            <ItemsControl x:Name="skinListControl">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button Content="{Binding SkinName}" Width="160" Style="{StaticResource MenuButtonStyle}" Click="ApplySkin_Click" Tag="{Binding}">
+                                            <Button.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="删除该皮肤" Click="DeleteSkin_Click" Tag="{Binding}"/>
+                                                </ContextMenu>
+                                            </Button.ContextMenu>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <Button Content="+ 导入皮肤 JSON" Width="160" Style="{StaticResource MenuButtonStyle}" Background="#0078D7" Foreground="White" Margin="0,5,0,0" Click="ImportSkin_Click"/>
+
+                            <Separator Margin="0,10"/>
+                            <TextBlock Text="配置管理" Foreground="{DynamicResource TextMainBrush}" FontSize="12" Margin="5,0,0,5"/>
+                            <Button Content="📁 导入旧配置" Width="160" Style="{StaticResource MenuButtonStyle}" Background="#28A745" Foreground="White" Click="ImportConfig_Click"/>
+                            <Button Content="📤 导出当前配置" Width="160" Style="{StaticResource MenuButtonStyle}" Background="#17A2B8" Foreground="White" Click="ExportConfig_Click"/>
+                            <Button Content="⚠️ 一键还原 (清空配置)" Width="160" Style="{StaticResource MenuButtonStyle}" Background="#DC3545" Foreground="White" Click="ResetConfig_Click"/>
                         </StackPanel>
                     </Border>
                 </Popup>
             </Grid>
 
-            <!-- 主体内容区 -->
+            <!-- 主体内容 -->
             <Grid x:Name="gridMainContent" Grid.Row="1" Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition x:Name="colLeftPanel" Width="320" MinWidth="200" MaxWidth="500"/>
@@ -156,10 +180,11 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- 左侧面板 -->
-                <Border x:Name="pnlLeft" Grid.Column="0" Background="{DynamicResource PanelBgBrush}" CornerRadius="8" AllowDrop="True" DragOver="Window_DragOver">
+                <!-- 左侧面板 (所有模式通用，放应用列表) -->
+                <Border x:Name="pnlLeft" Grid.Column="0" Background="{DynamicResource PanelBgBrush}" CornerRadius="0" AllowDrop="True" DragOver="Window_DragOver">
                     <Grid>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
@@ -168,11 +193,18 @@
                             <ColumnDefinition Width="25"/>
                         </Grid.ColumnDefinitions>
 
-                        <ListBox x:Name="lstApps" Grid.Row="0" Grid.Column="0" ItemContainerStyle="{StaticResource AppListItemStyle}"
+                        <TextBox x:Name="txtSearch" Grid.Row="0" Grid.ColumnSpan="2" Height="32" Margin="10,10,10,5"
+                                 Background="{DynamicResource SearchBoxBgBrush}" Foreground="{DynamicResource SearchBoxFgBrush}" 
+                                 BorderThickness="0" VerticalContentAlignment="Center" Padding="10,0" TextChanged="SearchBox_TextChanged" ToolTip="搜索应用"/>
+
+                        <ListBox x:Name="lstApps" Grid.Row="1" Grid.Column="0" ItemContainerStyle="{StaticResource AppListItemStyle}"
                                  Background="Transparent" BorderThickness="0" Padding="5"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                  PreviewMouseLeftButtonDown="LstApps_PreviewMouseLeftButtonDown"
                                  PreviewMouseMove="LstApps_PreviewMouseMove"
+                                 PreviewTouchDown="LstApps_PreviewTouchDown"
+                                 PreviewTouchUp="LstApps_PreviewTouchUp"
+                                 PreviewTouchMove="LstApps_PreviewTouchMove"
                                  MouseDoubleClick="LstApps_MouseDoubleClick">
                             <ListBox.GroupStyle>
                                 <GroupStyle>
@@ -199,18 +231,18 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
 
-                        <ScrollViewer Grid.Row="0" Grid.Column="1" VerticalScrollBarVisibility="Hidden" Margin="0,10,0,10">
+                        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Hidden" Margin="0,10,0,10">
                             <ItemsControl x:Name="letterPanel">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Button Style="{StaticResource LetterBtnStyle}" Content="{Binding}" Click="Letter_Click"/>
+                                        <Button Content="{Binding}" Background="Transparent" Foreground="{DynamicResource TextMutedBrush}" FontSize="12" Height="18" Click="Letter_Click"/>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
 
-                        <!-- 底部功能区 -->
-                        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="5,10,5,10">
+                        <!-- 底部功能按钮组 (矢量图标，自适应黑白) -->
+                        <StackPanel x:Name="pnlWin10Buttons" Grid.Row="2" Grid.ColumnSpan="2" Margin="5,10,5,10">
                             <Button Height="40" Background="Transparent" BorderThickness="0" Click="UserAccount_Click" HorizontalContentAlignment="Left">
                                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                                     <Grid Width="28" Height="28" Margin="0,0,10,0">
@@ -226,25 +258,25 @@
                             </Button>
                             <Button Height="36" Background="Transparent" BorderThickness="0" Click="OpenDocuments_Click" HorizontalContentAlignment="Left">
                                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                                    <TextBlock Text="&#xE8A5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="16" Margin="0,0,10,0"/>
+                                    <TextBlock Text="&#xE8A5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="文档" Foreground="{DynamicResource TextMainBrush}" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
                             <Button Height="36" Background="Transparent" BorderThickness="0" Click="OpenPictures_Click" HorizontalContentAlignment="Left">
                                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                                    <TextBlock Text="&#xEB9F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="16" Margin="0,0,10,0"/>
+                                    <TextBlock Text="&#xEB9F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="图片" Foreground="{DynamicResource TextMainBrush}" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
                             <Button Height="36" Background="Transparent" BorderThickness="0" Click="OpenSettings_Click" HorizontalContentAlignment="Left">
                                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                                    <TextBlock Text="&#xE713;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="16" Margin="0,0,10,0"/>
+                                    <TextBlock Text="&#xE713;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="设置" Foreground="{DynamicResource TextMainBrush}" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
                             <Button Height="36" Background="Transparent" BorderThickness="0" Click="PowerButton_Click" HorizontalContentAlignment="Left">
                                 <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                                    <TextBlock Text="&#xE7E8;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="16" Margin="0,0,10,0"/>
+                                    <TextBlock Text="&#xE7E8;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="16" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="电源" Foreground="{DynamicResource TextMainBrush}" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
@@ -254,80 +286,150 @@
 
                 <GridSplitter x:Name="gridSplitter" Grid.Column="1" Style="{StaticResource SplitterStyle}"/>
 
-                <!-- 右侧磁贴区域（Win10 模式） -->
-                <Border x:Name="pnlRight10" Grid.Column="2" Background="{DynamicResource PanelBgBrush}" CornerRadius="8" AllowDrop="True" DragOver="Window_DragOver">
+                <!-- Win10 磁贴面板 -->
+                <Border x:Name="pnlRight10" Grid.Column="2" Background="{DynamicResource PanelBgBrush}" CornerRadius="0" AllowDrop="True" DragOver="Window_DragOver">
                     <ScrollViewer x:Name="scrollWin10" VerticalScrollBarVisibility="Auto" Padding="15" AllowDrop="True" DragOver="Window_DragOver">
                         <StackPanel AllowDrop="True" DragOver="Window_DragOver">
                             <TextBlock Text="固定到开始屏幕" Foreground="{DynamicResource TextMainBrush}" FontSize="16" FontWeight="SemiBold" Margin="5,0,0,10"/>
-                            <ItemsControl x:Name="tileGroupsControl" Margin="0,0,0,20">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Margin="0,0,0,10" AllowDrop="True" DragOver="Window_DragOver">
-                                            <TextBlock Text="{Binding GroupTitle}" Foreground="{DynamicResource TextMutedBrush}" FontSize="13" Margin="5,0,0,5" MouseLeftButtonDown="GroupTitle_MouseLeftButtonDown"/>
-                                            <ItemsControl ItemsSource="{Binding Tiles}" Height="{Binding GroupHeight}" 
-                                                          AllowDrop="True" DragOver="Window_DragOver" Drop="Group_Drop">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <Canvas Background="Transparent" AllowDrop="True" DragOver="Window_DragOver"/>
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                                <ItemsControl.ItemContainerStyle>
-                                                    <Style TargetType="ContentPresenter">
-                                                        <Setter Property="Canvas.Left" Value="{Binding X}"/>
-                                                        <Setter Property="Canvas.Top" Value="{Binding Y}"/>
-                                                    </Style>
-                                                </ItemsControl.ItemContainerStyle>
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Border Width="{Binding Width}" Height="{Binding Height}" Background="{Binding TileColor}" CornerRadius="6" AllowDrop="True" DragOver="Window_DragOver">
-                                                            <Border.ContextMenu>
-                                                                <ContextMenu>
-                                                                    <MenuItem Header="以管理员身份运行" Click="RunAsAdmin_Click"/>
-                                                                    <MenuItem Header="打开文件所在位置" Click="OpenFileLocation_Click"/>
-                                                                    <Separator/>
-                                                                    <MenuItem Header="小图" Click="SetTileSizeSmall"/>
-                                                                    <MenuItem Header="中图" Click="SetTileSizeMedium"/>
-                                                                    <MenuItem Header="宽图" Click="SetTileSizeWide"/>
-                                                                    <MenuItem Header="大图" Click="SetTileSizeLarge"/>
-                                                                    <Separator/>
-                                                                    <MenuItem Header="取消固定" Click="UnpinTile"/>
-                                                                </ContextMenu>
-                                                            </Border.ContextMenu>
-
-                                                            <Grid PreviewMouseLeftButtonDown="Tile_PreviewMouseLeftButtonDown" PreviewMouseMove="Tile_PreviewMouseMove" Background="Transparent">
-                                                                <Button Background="Transparent" BorderThickness="0" Click="TileClick">
-                                                                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
-                                                                        <Image Source="{Binding Icon}" Width="28" Height="28" Margin="0,0,0,5"/>
-                                                                        <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90" TextAlignment="Center" Foreground="White" FontSize="12"/>
-                                                                    </StackPanel>
-                                                                </Button>
-                                                            </Grid>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-
-                            <Border Height="50" Margin="5,10" Background="Transparent" BorderBrush="#444" BorderThickness="1" CornerRadius="6"
-                                    AllowDrop="True" DragOver="Window_DragOver" Drop="NewGroup_Drop">
-                                <TextBlock Text="+ 拖拽到此处新建磁贴分组" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </Border>
+                            <StackPanel x:Name="tileContainerPanel">
+                                <ItemsControl x:Name="tileGroupsControl" Margin="0,0,0,20">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Margin="0,0,0,10" AllowDrop="True" DragOver="Window_DragOver">
+                                                <TextBlock Text="{Binding GroupTitle}" Foreground="{DynamicResource TextMutedBrush}" FontSize="13" Margin="5,0,0,5" MouseLeftButtonDown="GroupTitle_MouseLeftButtonDown"/>
+                                                <ItemsControl ItemsSource="{Binding Tiles}" Height="{Binding GroupHeight}" 
+                                                              AllowDrop="True" DragOver="Window_DragOver" Drop="Group_Drop">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <Canvas Background="Transparent" AllowDrop="True" DragOver="Window_DragOver"/>
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemContainerStyle>
+                                                        <Style TargetType="ContentPresenter">
+                                                            <Setter Property="Canvas.Left" Value="{Binding X}"/>
+                                                            <Setter Property="Canvas.Top" Value="{Binding Y}"/>
+                                                        </Style>
+                                                    </ItemsControl.ItemContainerStyle>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border Width="{Binding Width}" Height="{Binding Height}" Background="{Binding TileColor}" CornerRadius="{DynamicResource TileCornerRadius}" AllowDrop="True" DragOver="Window_DragOver">
+                                                                <Border.ContextMenu>
+                                                                    <ContextMenu>
+                                                                        <MenuItem Header="自定义颜色" Click="ChangeTileColor_Click"/>
+                                                                        <Separator/>
+                                                                        <MenuItem Header="小图" Click="SetTileSizeSmall"/>
+                                                                        <MenuItem Header="中图" Click="SetTileSizeMedium"/>
+                                                                        <MenuItem Header="宽图" Click="SetTileSizeWide"/>
+                                                                        <MenuItem Header="大图" Click="SetTileSizeLarge"/>
+                                                                        <Separator/>
+                                                                        <MenuItem Header="取消固定" Click="UnpinTile"/>
+                                                                    </ContextMenu>
+                                                                </Border.ContextMenu>
+                                                                <Grid PreviewMouseLeftButtonDown="Tile_PreviewMouseLeftButtonDown" PreviewMouseMove="Tile_PreviewMouseMove" 
+                                                                      PreviewTouchDown="Tile_PreviewTouchDown" PreviewTouchUp="Tile_PreviewTouchUp" PreviewTouchMove="Tile_PreviewTouchMove" Background="Transparent">
+                                                                    <Button Background="Transparent" BorderThickness="0" Click="TileClick">
+                                                                        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
+                                                                            <Image Source="{Binding Icon}" Width="28" Height="28" Margin="0,0,0,5"/>
+                                                                            <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="90" TextAlignment="Center" Foreground="White" FontSize="12"/>
+                                                                        </StackPanel>
+                                                                    </Button>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Border Height="50" Margin="5,10" Background="Transparent" BorderBrush="#44FFFFFF" BorderThickness="1" CornerRadius="{DynamicResource TileCornerRadius}"
+                                        AllowDrop="True" DragOver="Window_DragOver" Drop="NewGroup_Drop">
+                                    <TextBlock Text="+ 拖拽到此处新建磁贴分组" Foreground="{DynamicResource TextMutedBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </StackPanel>
                         </StackPanel>
                     </ScrollViewer>
                 </Border>
 
-                <!-- Metro 全屏模式 -->
-                <Border x:Name="pnlRight8" Grid.Column="0" Grid.ColumnSpan="3" Background="{DynamicResource MetroBgBrush}" CornerRadius="8" Visibility="Collapsed" AllowDrop="True" DragOver="Window_DragOver">
+                <!-- Win7 经典开始菜单面板 (直接去掉多余占位，只留右侧系统链接) -->
+                <Border x:Name="pnlWin7" Grid.Column="2" Background="{DynamicResource PanelBgBrush}" CornerRadius="0" Visibility="Collapsed">
+                    <Border Padding="20" Background="Transparent">
+                        <StackPanel VerticalAlignment="Top">
+                            <TextBlock Text="系统链接" Foreground="{DynamicResource TextMainBrush}" FontSize="16" FontWeight="Bold" Margin="0,0,0,15"/>
+                            <Button Height="36" Background="Transparent" Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" HorizontalContentAlignment="Left" Click="OpenDocuments_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE8A5;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="18" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="文档" Foreground="{DynamicResource TextMainBrush}" FontSize="14" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Height="36" Background="Transparent" Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" HorizontalContentAlignment="Left" Click="OpenPictures_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xEB9F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="18" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="图片" Foreground="{DynamicResource TextMainBrush}" FontSize="14" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Height="36" Background="Transparent" Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" HorizontalContentAlignment="Left" Click="OpenMusic_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE8D6;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="18" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="音乐" Foreground="{DynamicResource TextMainBrush}" FontSize="14" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Height="36" Background="Transparent" Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" HorizontalContentAlignment="Left" Click="OpenComputer_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE7F4;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="18" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="计算机" Foreground="{DynamicResource TextMainBrush}" FontSize="14" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Height="36" Background="Transparent" Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" HorizontalContentAlignment="Left" Click="OpenSettings_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE713;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="18" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="控制面板" Foreground="{DynamicResource TextMainBrush}" FontSize="14" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Height="36" Background="Transparent" Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" HorizontalContentAlignment="Left" Click="OpenDevices_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE749;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="18" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="设备和打印机" Foreground="{DynamicResource TextMainBrush}" FontSize="14" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Height="36" Background="Transparent" Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" HorizontalContentAlignment="Left" Click="OpenDefaultPrograms_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xEC50;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="18" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="默认程序" Foreground="{DynamicResource TextMainBrush}" FontSize="14" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Height="36" Background="Transparent" Foreground="{DynamicResource TextMainBrush}" BorderThickness="0" HorizontalContentAlignment="Left" Click="OpenHelp_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE9CE;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="{DynamicResource TextMainBrush}" FontSize="18" Margin="0,0,15,0" VerticalAlignment="Center"/>
+                                    <TextBlock Text="帮助和支持" Foreground="{DynamicResource TextMainBrush}" FontSize="14" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                </Border>
+
+                <!-- Win11 单窗格面板 -->
+                <Border x:Name="pnlWin11" Grid.Column="2" Background="{DynamicResource PanelBgBrush}" CornerRadius="0" Visibility="Collapsed">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="固定应用" Foreground="{DynamicResource TextMainBrush}" FontSize="14" FontWeight="Bold" Margin="15,15,0,10"/>
+                        <ScrollViewer Grid.Row="1" Padding="15">
+                            <WrapPanel x:Name="win11AppsGrid" Background="Transparent" AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop"/>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+
+                <!-- Win8 Metro 全屏面板 -->
+                <Border x:Name="pnlRight8" Grid.Column="0" Grid.ColumnSpan="3" Background="{DynamicResource MetroBgBrush}" CornerRadius="0" Visibility="Collapsed" AllowDrop="True" DragOver="Window_DragOver">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-
                         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,15,0,0">
                             <Button Background="Transparent" BorderThickness="0" Click="MetroUserMenu_Click">
                                 <StackPanel Orientation="Horizontal">
@@ -343,9 +445,7 @@
                                 </StackPanel>
                             </Button>
                         </StackPanel>
-
-                        <ScrollViewer x:Name="scrollWin8" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled"
-                                      AllowDrop="True" DragOver="Window_DragOver" Drop="Window_Drop">
+                        <ScrollViewer x:Name="scrollWin8" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                             <ItemsControl x:Name="metroTileControl" Margin="40,20,20,40">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -354,7 +454,7 @@
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border Width="{Binding Width}" Height="{Binding Height}" Background="{Binding TileColor}" CornerRadius="0" Margin="4" AllowDrop="True" DragOver="Window_DragOver">
+                                        <Border Width="{Binding Width}" Height="{Binding Height}" Background="{Binding TileColor}" CornerRadius="{DynamicResource TileCornerRadius}" Margin="4">
                                             <Button Background="Transparent" BorderThickness="0" Click="TileClick">
                                                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5">
                                                     <Image Source="{Binding Icon}" Width="32" Height="32" Margin="0,0,0,5"/>
@@ -366,25 +466,22 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </ScrollViewer>
-
-                        <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,15">
+                        <StackPanel Grid.Row="2" HorizontalAlignment="Center" Margin="0,0,0,15">
                             <Button x:Name="btnDownArrow" Width="40" Height="40" Background="Transparent" BorderThickness="0" Click="ToggleAppsView">
-                                <TextBlock Text="&#xE74B;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="White" FontSize="20"/>
+                                <TextBlock Text="&#xE74B;" FontFamily="Segoe Fluent Icons" Foreground="White" FontSize="20"/>
                             </Button>
                         </StackPanel>
-
                         <Grid x:Name="pnlAllAppsView" Grid.Row="0" Grid.RowSpan="3" Background="{DynamicResource MetroBgBrush}" Visibility="Collapsed" Margin="20,10,20,10">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <StackPanel Orientation="Horizontal" Margin="0,5,0,10">
-                                <Button x:Name="btnUpArrow" Width="40" Height="40" Background="Transparent" BorderThickness="0" Click="ToggleAppsView">
-                                    <TextBlock Text="&#xE74A;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Foreground="White" FontSize="20"/>
+                                <Button Width="40" Height="40" Background="Transparent" BorderThickness="0" Click="ToggleAppsView">
+                                    <TextBlock Text="&#xE74A;" FontFamily="Segoe Fluent Icons" Foreground="White" FontSize="20"/>
                                 </Button>
                                 <TextBlock Text="所有应用" Foreground="White" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" Margin="10,0,0,0"/>
                             </StackPanel>
-
                             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                                 <ItemsControl x:Name="allAppsMetroControl">
                                     <ItemsControl.ItemsPanel>
