@@ -28,6 +28,15 @@ namespace WinLauncher.Models
         public double X { get => _x; set { _x = value; OnPropertyChanged(); } }
         private double _y;
         public double Y { get => _y; set { _y = value; OnPropertyChanged(); } }
+        private double _displayX;
+        public double DisplayX { get => _displayX; set { _displayX = value; OnPropertyChanged(); } }
+
+        private double _displayY;
+        public double DisplayY { get => _displayY; set { _displayY = value; OnPropertyChanged(); } }
+
+        /// <summary>首次布局时直接把显示坐标对齐到目标坐标，避免开场从 (0,0) 飞过来</summary>
+        public bool HasPosition { get; set; }
+
         private double _width = 104;
         public double Width { get => _width; set { _width = value; OnPropertyChanged(); } }
         private double _height = 104;
